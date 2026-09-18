@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. DICTIONARY TRANSLATIONS (English, Hindi, Punjabi)
-// ==========================================================================
 const translations = {
     en: {
         badge: "🌾 Government Approved Portal",
@@ -17,7 +14,6 @@ const translations = {
         registerLink: "Register here",
         helpline: "Toll-Free Kisan Helpline:",
         
-        // Register Page
         createAccountTitle: "Create Your Account",
         registerSub: "Register to book your crop procurement slots easily.",
         nameLabel: "Full Name",
@@ -31,7 +27,6 @@ const translations = {
         alreadyAccount: "Already have an account?",
         loginLink: "Login here",
 
-        // Booking Page
         bookTitle: "Book Procurement Slot",
         bookSub: "Schedule a time to drop off your crops at the nearest center.",
         centerLabel: "Procurement Centre",
@@ -46,7 +41,6 @@ const translations = {
         bookBtnText: "Confirm Slot Booking",
         backDashboard: "← Back to Dashboard",
 
-        // Dashboard
         welcomeDashboard: "Farmer Services Portal",
         selectService: "Select an action from your dashboard menu below:",
         menuBook: "Book a Slot",
@@ -160,9 +154,6 @@ const translations = {
     }
 };
 
-// ==========================================================================
-// 2. LANGUAGE SWITCHER LOGIC
-// ==========================================================================
 function setLanguage(lang) {
     const elements = document.querySelectorAll('[data-i18n]');
     elements.forEach(element => {
@@ -183,12 +174,8 @@ function setLanguage(lang) {
     localStorage.setItem('selectedLanguage', lang);
 }
 
-// ==========================================================================
-// 3. MAIN INITIALIZATION (Runs on Page Load)
-// ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- A. Setup Language Dropdown ---
     const langSelect = document.getElementById('langSelect');
     if (langSelect) {
         const savedLang = localStorage.getItem('selectedLanguage') || 'en';
@@ -200,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- B. Setup Password Show/Hide Toggle ---
     const togglePasswordBtn = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
     if (togglePasswordBtn && passwordInput) {
@@ -211,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- C. Setup Login Form (`index.html`) ---
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -246,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- D. Setup Register Form (`register.html`) ---
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
@@ -280,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- E. Setup Booking Form (`booking.html`) ---
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', async (e) => {
@@ -341,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- F. Load Dynamic Token via API (`token.html` & `procurement.html`) ---
     const tokenDisplay = document.getElementById('tokenNumber');
     const procurementTokenDisplay = document.getElementById('procurementToken');
     const activeBookingCard = document.getElementById('activeBookingCard');
@@ -412,7 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- G. Dynamic Queue & Payment Tracker (`q.html` & `payment.html`) ---
     const userTokenDisplay = document.getElementById('userTokenDisplay');
     const paymentTokenDisplay = document.getElementById('paymentTokenDisplay');
 
@@ -430,18 +411,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         const rawToken = data.booking.token_number || data.token_number;
                         const formattedToken = rawToken.startsWith('#') ? rawToken : '#' + rawToken;
                         
-                        // Extract numeric ID from token (e.g., "#003" -> 3)
                         const tokenSeq = parseInt(rawToken.replace('#', ''), 10) || 1;
                         const servingSeq = Math.max(1, tokenSeq - 2);
                         const servingStr = `#${String(servingSeq).padStart(3, '0')}`;
                         const farmersAhead = Math.max(0, tokenSeq - 1);
-                        const estWaitMins = farmersAhead * 10; // ~10 mins per farmer
+                        const estWaitMins = farmersAhead * 10;
 
-                        // Calculate total payment based on MSP (Quantity in Quintals x ₹2,275)
                         const cropQty = parseFloat(data.booking.quantity) || 0;
                         const totalPayout = cropQty * 2275;
 
-                        // --- Populate Queue Page (q.html) ---
                         if (userTokenDisplay) {
                             userTokenDisplay.textContent = formattedToken;
                             const servingElem = document.getElementById('currentlyServingDisplay');
@@ -452,7 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (waitElem) waitElem.textContent = farmersAhead === 0 ? "Serving Now" : `~${estWaitMins} mins`;
                         }
 
-                        // --- Populate Payment Page (payment.html) ---
                         if (paymentTokenDisplay) {
                             paymentTokenDisplay.textContent = formattedToken;
                             const amountElem = document.getElementById('paymentAmountDisplay');
@@ -471,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- H. Setup Logout Link Handler ---
     const logoutLinks = document.querySelectorAll('.logout-link');
     logoutLinks.forEach(link => {
         link.addEventListener('click', () => {

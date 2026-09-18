@@ -9,7 +9,7 @@
 }
 
 body {
-    background-color: #f0f4f1; /* Soft natural grey-green background */
+    background-color: #f0f4f1; 
     color: #2c3e50;
     display: flex;
     justify-content: center;
@@ -68,7 +68,7 @@ body {
 .brand-title {
     font-size: 32px;
     font-weight: 800;
-    color: #2e7d32; /* Agricultural forest green */
+    color: #2e7d32; 
     letter-spacing: 1px;
 }
 
