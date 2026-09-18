@@ -1,27 +1,333 @@
-body{
-    font-family: 'Times New Roman', Times, serif;
-    text-align: center;
-    background: #f4f7f2;
-    padding: 40px;
+/* ==========================================================================
+   1. GLOBAL RESET & BASE STYLES
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
 
+body {
+    background-color: #f0f4f1; /* Soft natural grey-green background */
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
-h1{
-    font-size: 40px;
+
+/* ==========================================================================
+   2. CARD CONTAINER & LAYOUT
+   ========================================================================== */
+.auth-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 440px;
+    padding: 30px 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e1e8e2;
 }
-h2{
+
+.card-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #c8e6c9;
+}
+
+.lang-dropdown {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 12px;
+    background: #f9f9f9;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   3. TYPOGRAPHY & HEADERS
+   ========================================================================== */
+.auth-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.brand-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2e7d32; /* Agricultural forest green */
+    letter-spacing: 1px;
+}
+
+.auth-header h2 {
+    font-size: 20px;
+    color: #1b5e20;
+    margin-top: 5px;
+}
+
+.auth-header p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+   4. FORM ELEMENTS & INPUTS
+   ========================================================================== */
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #cccccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fafafa;
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #2e7d32;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+/* Input Group with Country Code (+91) */
+.input-prefix-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-prefix-group .prefix {
+    background: #eee;
+    padding: 12px;
+    border: 1.5px solid #ccc;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-prefix-group input {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Password Toggle Wrapper */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.btn-toggle-pw {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Checkbox & Options */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.forgot-link {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   5. BUTTONS & ACTIONS
+   ========================================================================== */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #1b5e20;
+}
+
+.btn-secondary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
     margin-top: 10px;
 }
 
-a{
-    display: block;
-    width: 220px;
-    padding: 14px;
-    margin: 15px auto;
-    text-decoration: none;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 16px;
-    
+/* ==========================================================================
+   6. DASHBOARD, STATUS & TOKEN CARDS
+   ========================================================================== */
+.dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
 
+.nav-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: #f9fbf9;
+    border: 1.5px solid #e0e8e1;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 15px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-card:hover {
+    border-color: #2e7d32;
+    transform: translateY(-2px);
+    background: #ffffff;
+}
+
+.nav-icon {
+    font-size: 20px;
+}
+
+/* Status Cards & Pass Receipts */
+.status-card, .pass-card {
+    background: #f8faf8;
+    border: 1.5px dashed #a5d6a7;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e8eee9;
+    font-size: 14px;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.token-display {
+    font-size: 42px;
+    color: #2e7d32;
+    font-weight: 800;
+    margin: 10px 0;
+}
+
+.status-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-badge.warning { background: #fff3cd; color: #856404; }
+.status-badge.danger { background: #f8d7da; color: #721c24; }
+.status-badge.success { background: #d4edda; color: #155724; }
+
+/* ==========================================================================
+   7. FOOTER & NAVIGATION
+   ========================================================================== */
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #666;
+}
+
+.auth-footer a {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.help-section {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    font-size: 11px;
+}
+
+.action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }

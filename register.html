@@ -1,29 +1,119 @@
 <!DOCTYPE html>
-<html>
-    <head>
-       <title>LINK-Register</title> 
-         <link rel="stylesheet" href="looks.css">
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2> Create your account</h2>
-        <p>Register to book your procurement slot.</p>
-        <input type="text" placeholder="Full Name">
-        <br><br>
-        <input type="text" placeholder="'Phone number">
-        <br><br>
-        <input type="text" placeholder="State">
-        <br><br>
-        <input type="text" placeholder="Village">
-        <br><br>
-        <input type="password" placeholder="Password">
-        <br><br>
-        <a href="dashboard.html">
-            Create account
-            </a>
-        <p>Already have an account?</p>
-        <a href="index.html">Login</a>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Register Account</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
 
+    <main class="auth-card">
+        <!-- Top Bar: Tag & Language Switcher -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
 
-    </body>
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 data-i18n="createAccountTitle">Create Your Account</h2>
+            <p data-i18n="registerSub">Register to book your crop procurement slots easily.</p>
+        </header>
+
+        <!-- Registration Form -->
+        <form id="registerForm">
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName" data-i18n="nameLabel">Full Name</label>
+                <input 
+                    type="text" 
+                    id="fullName" 
+                    name="fullName" 
+                    placeholder="e.g. Ramesh Kumar" 
+                    data-i18n-placeholder="namePlaceholder"
+                    required
+                >
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                <label for="phoneNumber" data-i18n="phoneLabel">Phone Number</label>
+                <div class="input-prefix-group">
+                    <span class="prefix">+91</span>
+                    <input 
+                        type="tel" 
+                        id="phoneNumber" 
+                        name="phoneNumber" 
+                        placeholder="10-digit mobile number" 
+                        data-i18n-placeholder="phonePlaceholder"
+                        pattern="[0-9]{10}" 
+                        required
+                    >
+                </div>
+            </div>
+
+            <!-- State -->
+            <div class="form-group">
+                <label for="state" data-i18n="stateLabel">State</label>
+                <input 
+                    type="text" 
+                    id="state" 
+                    name="state" 
+                    placeholder="e.g. Punjab" 
+                    data-i18n-placeholder="statePlaceholder"
+                    required
+                >
+            </div>
+
+            <!-- Village / District -->
+            <div class="form-group">
+                <label for="village" data-i18n="villageLabel">Village / District</label>
+                <input 
+                    type="text" 
+                    id="village" 
+                    name="village" 
+                    placeholder="e.g. Rampur" 
+                    data-i18n-placeholder="villagePlaceholder"
+                    required
+                >
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password" data-i18n="passwordLabel">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Create a password (min 6 characters)" 
+                        data-i18n-placeholder="createPasswordPlaceholder"
+                        minlength="6"
+                        required
+                    >
+                    <button type="button" id="togglePassword" class="btn-toggle-pw" aria-label="Toggle Password Visibility">👁️</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" data-i18n="createAccountBtn">Create Account</button>
+        </form>
+
+        <!-- Footer Navigation -->
+        <footer class="auth-footer">
+            <p>
+                <span data-i18n="alreadyAccount">Already have an account?</span> 
+                <a href="index.html" data-i18n="loginLink">Login here</a>
+            </p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

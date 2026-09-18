@@ -1,25 +1,92 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title> LINK-Login </title>
-        <link rel="stylesheet" href="looks.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Farmer Login</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
 
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2>Welcome to LINK</h2>
-        <p>Login to manage your procurement slots.</p>
-        <input type="text" placeholder="Phone number">
-        <br><br>
-        <input type=" password" placeholder="Password">
-        <br><br>
-        <a href="dashboard.html">
-            Login
-        </a>
-        <p> Don't have an account?</p>
-        <a href="register.html">Register</a> 
+    <main class="auth-card">
+        <!-- Top Bar: Portal Tag & Language Switcher -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
 
-    </body>
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 data-i18n="welcome">Welcome Back</h2>
+            <p data-i18n="subheading">Login to book and manage your crop procurement slots.</p>
+        </header>
 
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="phoneNumber" data-i18n="phoneLabel">Phone Number</label>
+                <div class="input-prefix-group">
+                    <span class="prefix">+91</span>
+                    <input 
+                        type="tel" 
+                        id="phoneNumber" 
+                        name="phoneNumber" 
+                        placeholder="10-digit mobile number" 
+                        data-i18n-placeholder="phonePlaceholder"
+                        pattern="[0-9]{10}" 
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" data-i18n="passwordLabel">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        data-i18n-placeholder="passwordPlaceholder"
+                        required
+                    >
+                    <button type="button" id="togglePassword" class="btn-toggle-pw" aria-label="Toggle Password Visibility">👁️</button>
+                </div>
+            </div>
+
+            <div class="form-options">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="rememberMe"> 
+                    <span data-i18n="rememberMe">Remember Me</span>
+                </label>
+                <a href="#" class="forgot-link" data-i18n="forgotPw">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-primary" data-i18n="loginBtn">Login to Portal</button>
+        </form>
+
+        <!-- Footer Navigation & Helpline -->
+        <footer class="auth-footer">
+            <p>
+                <span data-i18n="noAccount">Don't have an account?</span> 
+                <a href="register.html" data-i18n="registerLink">Register here</a>
+            </p>
+            <div class="help-section">
+                <small>
+                    <span data-i18n="helpline">Toll-Free Kisan Helpline:</span> 
+                    <strong>1800-180-1551</strong>
+                </small>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Connect JavaScript (We will write this later) -->
+    <script src="script.js"></script>
+</body>
 </html>
- 

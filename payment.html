@@ -1,15 +1,54 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>LINK/Payment status</title>
-         <link rel="stylesheet" href="looks.css">
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2>Payment Status</h2>
-        <p>Your token: <b>#012</b></p>
-        <p>Procurement amount: <b>₹10,500</b></p>
-        <p>Status: <b>Pending</b></p>
-        <p>Your payment will be updated after procurement is completed.</p>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Payment Status</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
+
+    <main class="auth-card">
+        <!-- Top Bar -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 data-i18n="paymentTitle">Payment Status</h2>
+            <p data-i18n="paymentSub">Direct bank transfer details for your crops.</p>
+        </header>
+
+        <!-- Details Card (Dynamic ID Hooks) -->
+        <div class="status-card">
+            <div class="status-item">
+                <span data-i18n="tokenLabel">Your Token Number:</span>
+                <strong id="paymentTokenDisplay">No Active Booking</strong>
+            </div>
+            <div class="status-item">
+                <span data-i18n="amountLabel">Total Amount:</span>
+                <strong id="paymentAmountDisplay" class="price">₹0.00</strong>
+            </div>
+            <div class="status-item">
+                <span data-i18n="paymentStatusLabel">Payout Status:</span>
+                <span id="paymentStatusDisplay" class="status-badge danger" data-i18n="statusPending">Pending Verification</span>
+            </div>
+            <p class="note" data-i18n="paymentNote">Funds will transfer to your registered bank account after quality check.</p>
+        </div>
+
+        <!-- Navigation -->
+        <footer class="auth-footer">
+            <p><a href="dashboard.html" data-i18n="backDashboard">← Back to Dashboard</a></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

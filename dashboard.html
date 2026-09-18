@@ -1,37 +1,65 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>LINK/Dashboard</title>
-         <link rel="stylesheet" href="looks.css">
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2>Welcome!</h2>
-        <p>Please select your option:</p>
-        <br>
-        <a href="booking.html">
-            Book a slot
-                
-            </a>
-        <br><br>
-        <a href="token.html">
-        My token
-        </a>
-        
-        <br><br>
-        <a href="queue.html">
-            Track Queue
-        </a>
-        
-        <br><br>
-        <a href="procurement.html">
-            Procurement status
-        </a>
-        <br><br>
-        <a href="payment.html">
-            Payment status
-            </a>
-        
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Farmer Dashboard</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
 
-    </body>
+    <main class="auth-card">
+        <!-- Top Bar -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 data-i18n="welcomeDashboard">Farmer Services Portal</h2>
+            <p data-i18n="selectService">Select an action from your dashboard menu below:</p>
+        </header>
+
+        <!-- Grid Menu -->
+        <nav class="dashboard-grid">
+            <a href="booking.html" class="nav-card">
+                <span class="nav-icon">📅</span>
+                <span data-i18n="menuBook">Book a Slot</span>
+            </a>
+
+            <a href="token.html" class="nav-card">
+                <span class="nav-icon">🎟️</span>
+                <span data-i18n="menuToken">My Token Pass</span>
+            </a>
+
+            <a href="queue.html" class="nav-card">
+                <span class="nav-icon">⏱️</span>
+                <span data-i18n="menuQueue">Track Live Queue</span>
+            </a>
+
+            <a href="procurement.html" class="nav-card">
+                <span class="nav-icon">🌾</span>
+                <span data-i18n="menuProcurement">Procurement Status</span>
+            </a>
+
+            <a href="payment.html" class="nav-card">
+                <span class="nav-icon">💳</span>
+                <span data-i18n="menuPayment">Payment Status</span>
+            </a>
+        </nav>
+
+        <!-- Footer / Logout -->
+        <footer class="auth-footer">
+            <p><a href="index.html" class="logout-link" data-i18n="logout">Logout</a></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

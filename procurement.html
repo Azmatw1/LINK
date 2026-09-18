@@ -1,14 +1,64 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>LINK/Procurement</title>
-         <link rel="stylesheet" href="looks.css">
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2>Procurement Status: </h2>
-        <P>Your token: <b>#012</b></P>
-        <p>Status: <b>Waiting</b></p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Procurement Status</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
 
-    </body>
+    <main class="auth-card">
+        <!-- Top Bar -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 id="procurementHeaderTitle" data-i18n="procurementTitle">Procurement Status</h2>
+            <p id="procurementHeaderSub" data-i18n="procurementSub">Track the physical drop-off and inspection of your crops.</p>
+        </header>
+
+        <!-- Status Card (Active) -->
+        <div id="procurementActiveCard">
+            <div class="status-card">
+                <div class="status-item">
+                    <span data-i18n="tokenLabel">Your Token Number:</span>
+                    <strong id="procurementToken">---</strong>
+                </div>
+                <div class="status-item">
+                    <span data-i18n="procurementStatusLabel">Drop-off Status:</span>
+                    <span class="status-badge warning" data-i18n="statusWaiting">Waiting at Center</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Booking State (Displayed if farmer has no active booking) -->
+        <div id="procurementNoBookingCard" style="display: none;">
+            <div class="pass-card" style="border-color: #ffc107; background: #fffdf5;">
+                <span style="font-size: 36px; display: block; margin-bottom: 8px;">📋</span>
+                <h3 style="color: #92400e; font-size: 18px; margin-bottom: 8px;">No active slot booked yet</h3>
+                <p style="color: #6b7280; font-size: 13px; margin-bottom: 6px;">You haven't scheduled any crop drop-off slot.</p>
+                <p style="color: #6b7280; font-size: 13px;">Please book a slot first to track procurement.</p>
+            </div>
+            <div class="action-stack">
+                <a href="booking.html" class="btn-primary" data-i18n="menuBook">Book a Slot Now</a>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <footer class="auth-footer">
+            <p><a href="dashboard.html" data-i18n="backDashboard">← Back to Dashboard</a></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

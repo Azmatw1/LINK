@@ -1,24 +1,57 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>LINK/Track queue</title>
-         <link rel="stylesheet" href="looks.css">
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2>Queue Status</h2>
-        <p>Current token: <b>#007</b></p>
-        <p>Your token: <b>#012</b></p>
-        <p>People ahead: <b> 5 </b></p>
-        <p>Estimated wait: <b>45 minutes</b></p>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Live Queue Tracker</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
+
+    <main class="auth-card">
+        <!-- Top Bar -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 data-i18n="queueTitle">Live Queue Status</h2>
+            <p data-i18n="queueSub">Real-time status of your selected procurement center.</p>
+        </header>
+
+        <!-- Live Queue Grid (Dynamic ID Hooks) -->
+        <div class="status-card">
+            <div class="status-item">
+                <span data-i18n="currentServing">Currently Serving:</span>
+                <strong id="currentlyServingDisplay" class="highlight">--</strong>
+            </div>
+            <div class="status-item">
+                <span data-i18n="yourToken">Your Token:</span>
+                <strong id="userTokenDisplay">No Active Booking</strong>
+            </div>
+            <div class="status-item">
+                <span data-i18n="peopleAhead">Farmers Ahead:</span>
+                <strong id="farmersAheadDisplay">--</strong>
+            </div>
+            <div class="status-item">
+                <span data-i18n="estWait">Estimated Wait:</span>
+                <strong id="estWaitDisplay">--</strong>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <footer class="auth-footer">
+            <p><a href="dashboard.html" data-i18n="backDashboard">← Back to Dashboard</a></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

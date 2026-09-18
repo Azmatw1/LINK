@@ -1,18 +1,62 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>LINK/Token</title>
-         <link rel="stylesheet" href="looks.css">
-    </head>
-    <body>
-        <h1>LINK</h1>
-        <h2>Slot booked successfully!</h2>
-        <p>Your procurement token is:</p>
-        <h1 id="tokenNumber">#012</h1>
-        <p>Please arrive at your selected procurement centre on time.</p>
-        <a href="queue.html">
-            Track queue
-        </a>
-        <script scr="script.js"></script>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK - Booking Token</title>
+    <link rel="stylesheet" href="looks.css">
+</head>
+<body>
+
+    <main class="auth-card">
+        <!-- Top Bar -->
+        <div class="card-top-bar">
+            <span class="badge" data-i18n="badge">🌾 Government Approved Portal</span>
+            <select id="langSelect" class="lang-dropdown">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+
+        <!-- Header -->
+        <header class="auth-header">
+            <h1 class="brand-title">LINK</h1>
+            <h2 id="tokenHeaderTitle" data-i18n="bookedSuccess">Slot Booked Successfully!</h2>
+            <p id="tokenHeaderSub" data-i18n="showTokenNote">Show this digital pass at the center entry gate.</p>
+        </header>
+
+        <!-- Digital Pass Card (Active Booking State) -->
+        <div id="activeBookingCard">
+            <div class="pass-card">
+                <span data-i18n="tokenLabel">Your Procurement Pass</span>
+                <h1 id="tokenNumber" class="token-display">---</h1>
+                <p><strong data-i18n="centerLabel">Center:</strong> <span id="tokenCenter">Loading...</span></p>
+                <p><strong data-i18n="timeLabel">Window:</strong> <span id="tokenWindow">Loading...</span></p>
+            </div>
+
+            <!-- Action Links -->
+            <div class="action-stack">
+                <a href="queue.html" class="btn-primary" data-i18n="trackQueueBtn">Track Live Queue</a>
+                <a href="dashboard.html" class="btn-secondary" data-i18n="goDashboard">Go to Dashboard</a>
+            </div>
+        </div>
+
+        <!-- No Booking State (Displayed if farmer has no active booking) -->
+        <div id="noBookingCard" style="display: none;">
+            <div class="pass-card" style="border-color: #ffc107; background: #fffdf5;">
+                <span style="font-size: 36px; display: block; margin-bottom: 8px;">📋</span>
+                <h3 style="color: #92400e; font-size: 18px; margin-bottom: 8px;">No active slot booked yet</h3>
+                <p style="color: #6b7280; font-size: 13px; margin-bottom: 6px;">You haven't scheduled any crop drop-off slot.</p>
+                <p style="color: #6b7280; font-size: 13px;">Please book a procurement slot to generate your pass.</p>
+            </div>
+            <div class="action-stack">
+                <a href="booking.html" class="btn-primary" data-i18n="menuBook">Book a Slot Now</a>
+                <a href="dashboard.html" class="btn-secondary" data-i18n="goDashboard">Go to Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>
