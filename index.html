@@ -9,17 +9,38 @@
         <h1>LINK</h1>
         <h2>Welcome to LINK</h2>
         <p>Login to manage your procurement slots.</p>
-        <input type="text" placeholder="Phone number">
-        <br><br>
-        <input type=" password" placeholder="Password">
-        <br><br>
-        <a href="dashboard.html">
-            Login
-        </a>
-        <p> Don't have an account?</p>
-        <a href="register.html">Register</a> 
+        <form id="loginForm">
+
+            <input
+                type="text"
+                id="phoneNumber"
+                placeholder="Phone number"
+                required
+            >
+
+            <br><br>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <p>Don't have an account?</p>
+
+        <a href="register.html">Register</a>
+
+        <!-- JavaScript -->
+        <script src="script.js"></script>
 
     </body>
-
 </html>
- 

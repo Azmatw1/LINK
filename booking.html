@@ -1,35 +1,173 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>LINK/Book a slot</title>
-         <link rel="stylesheet" href="looks.css">
+        <title>LINK - Book a Slot</title>
+        <link rel="stylesheet" href="looks.css">
     </head>
+
     <body>
+
         <h1>LINK</h1>
         <h2>Book your procurement slot</h2>
-        <label> Procurement centre</label>
+
+        <form id="bookingForm">
+
+            <!-- Procurement Centre -->
+            <label>Procurement Centre</label>
+            <br>
+
+            <select id="centre" required>
+                <option value="">Loading centres...</option>
+            </select>
+
+            <br><br>
+
+
+            <!-- Date -->
+            <label>Date</label>
+            <br>
+
+            <input
+                type="date"
+                id="bookingDate"
+                required
+            >
+
+            <br><br>
+
+
+            <!-- Time Slot -->
+            <label>Time Slot</label>
+            <br>
+
+           <select id="timeSlot" required>
+    <option value="">Select centre and date first</option>
+</select>
+
+            <br><br>
+
+
+            <!-- Crop -->
+            <label>Crop</label>
+            <br>
+
+            <select id="crop" required>
+                <option value="">Select crop</option>
+                <option value="Apple">Apple</option>
+                <option value="Rice">Rice</option>
+                <option value="Maize">Maize</option>
+            </select>
+
+            <br><br>
+
+
+            <!-- Apple-specific fields -->
+            <div id="appleFields" style="display: none;">
+
+                <!-- Variety -->
+                <label>Variety</label>
+                <br>
+
+                <select id="variety">
+                    <option value="">Select variety</option>
+                    <option value="Kullu Delicious">Kullu Delicious</option>
+                    <option value="Delicious">Delicious</option>
+                    <option value="American">American</option>
+                </select>
+
+                <br><br>
+
+
+                <!-- Grade -->
+                <label>Grade</label>
+                <br>
+
+                <select id="grade">
+                    <option value="">Select grade</option>
+                    <option value="A">Grade A</option>
+                    <option value="B">Grade B</option>
+                    <option value="C">Grade C</option>
+                </select>
+
+                <br><br>
+
+
+                <!-- Number of boxes -->
+                <label>Number of Boxes</label>
+                <br>
+
+                <input
+                    type="number"
+                    id="boxCount"
+                    min="1"
+                    placeholder="e.g. 40"
+                >
+
+                <br><br>
+
+
+                <!-- Weight per box -->
+                <label>Weight per Box (Kg)</label>
+                <br>
+
+                <input
+                    type="number"
+                    id="boxWeight"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="e.g. 20"
+                >
+
+                <br><br>
+
+            </div>
+
+
+            <!-- General quantity for non-Apple crops -->
+            <div id="generalQuantity">
+
+                <label>Quantity (Kg)</label>
+                <br>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    min="1"
+                    placeholder="e.g. 500"
+                >
+
+                <br><br>
+
+            </div>
+
+
+            <!-- Total quantity -->
+            <label>Total Quantity (Kg)</label>
+            <br>
+
+            <input
+                type="number"
+                id="totalQuantity"
+                readonly
+                placeholder="Calculated automatically"
+            >
+
+            <br><br>
+
+
+            <!-- Book button -->
+            <button type="submit" id="bookBtn">
+                Book Slot
+            </button>
+
+        </form>
+
         <br>
-        <input type="text" placeholder="Enter centre">
-        <br><br>
-        <label>Date</label>
-        <br>
-        <input type="date">
-        <br><br>
-        <label>Time</label>
-        <br>
-        <input type="time">
-        <br><br>
-        <label>Crop</label>
-        <br>
-        <input type="text" placeholder="e.g rice">
-        <br><br>
-        <label>Quantity (Kg)</label>
-        <br>
-        <input type="number" placeholder="e.g 100">
-        <br><br>
-        <a href="token.html">
-            <button id="bookbtn">Book slot</button>
+
+        <a href="dashboard.html">
+            Back to Dashboard
         </a>
+
         <script src="script.js"></script>
 
     </body>

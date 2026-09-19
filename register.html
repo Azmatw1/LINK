@@ -8,22 +8,54 @@
         <h1>LINK</h1>
         <h2> Create your account</h2>
         <p>Register to book your procurement slot.</p>
-        <input type="text" placeholder="Full Name">
-        <br><br>
-        <input type="text" placeholder="'Phone number">
-        <br><br>
-        <input type="text" placeholder="State">
-        <br><br>
-        <input type="text" placeholder="Village">
-        <br><br>
-        <input type="password" placeholder="Password">
-        <br><br>
-        <a href="dashboard.html">
-            Create account
-            </a>
-        <p>Already have an account?</p>
-        <a href="index.html">Login</a>
 
+        <form id="registerForm">
+        <input
+            type="text"
+            id="fullName"
+            placeholder="Full Name"
+            required
+        >
 
-    </body>
+        <br><br>
+         <input
+            type="text"
+            id="phoneNumber"
+            placeholder="Phone Number"
+            required
+        >
+
+        <br><br>
+
+        <input
+            type="text"
+            id="village"
+            placeholder="Village"
+            required
+        >
+
+        <br><br>
+         <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+        >
+
+        <br><br>
+         <button type="submit" id="createAccountBtn">
+    Create Account
+</button>
+<!--Js will handle the button stuff-->
+     </form>
+
+     <p>Already have an account?</p>
+
+    <a href="index.html">
+        Login
+    </a>
+<!--JSSS!-->
+    <script src="script.js"></script>
+
+</body>
 </html>

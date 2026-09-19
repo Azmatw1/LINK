@@ -70,11 +70,11 @@ CREATE TABLE IF NOT EXISTS bookings (
     grade TEXT,
 
     -- Number of apple boxes.
-    box_count INTEGER NOT NULL,
+    box_count INTEGER,
 
     --  Weight of ONE box in kilograms.
     --  Example: 25 kg
-    box_weight_kg REAL NOT NULL,
+    box_weight_kg REAL,
 
     -- Total quantity brought by the farmer.
     -- 
@@ -85,6 +85,8 @@ CREATE TABLE IF NOT EXISTS bookings (
     -- Farmer-facing token number.
     --  Example: 1, 2, 3...
     token_number INTEGER NOT NULL,
+
+    booked_at TEXT NOT NULL,
 
     --  Current procurement stage.
     -- Initially the farmer is waiting.
