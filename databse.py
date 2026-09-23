@@ -49,51 +49,20 @@ CREATE TABLE IF NOT EXISTS time_slots (
 # This is the MAIN table.
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS bookings (
-    -- This is an internal database ID.
+    -- internal database ID.
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-    -- Which farmer?
     user_id INTEGER NOT NULL,
     center_id INTEGER NOT NULL,
     slot_id INTEGER NOT NULL,
-
-    -- What crop is being brought?
-    -- For our first version this will usually be "Apple".
     crop TEXT NOT NULL,
-
-    -- Apple variety, if provided.
-    --  Example: Kullu Delicious
     variety TEXT,
-
-    -- Apple grade, if provided.
-    --  Example: Grade A
     grade TEXT,
-
-    -- Number of apple boxes.
     box_count INTEGER,
-
-    --  Weight of ONE box in kilograms.
-    --  Example: 25 kg
     box_weight_kg REAL,
-
-    -- Total quantity brought by the farmer.
-    -- 
-    -- Example:
-    -- 20 boxes × 25 kg = 500 kg
     total_quantity_kg REAL NOT NULL,
-
-    -- Farmer-facing token number.
-    --  Example: 1, 2, 3...
     token_number INTEGER NOT NULL,
-
     booked_at TEXT NOT NULL,
-
-    --  Current procurement stage.
-    -- Initially the farmer is waiting.
     procurement_status TEXT DEFAULT 'Waiting',
-
-    -- Payment status.
-    -- Initially payment has not been completed.
     payment_status TEXT DEFAULT 'Pending',
 
     --  Connect booking to farmer.

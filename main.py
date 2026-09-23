@@ -4,53 +4,37 @@ from flask_cors import CORS
 from datetime import datetime
 import sqlite3
 
-
-#create flask application
 app = Flask(__name__)
 
-# Allow our frontend to communicate with Flask
 CORS(app)
 
 # DATABASE CONNECTION
 def get_db():
-      # Open our SQLite database
     connection = sqlite3.connect("link.db")
-
-    # Makes database rows behave like dictionaries
     connection.row_factory = sqlite3.Row
-
     return connection
+
 @app.get("/")
 def home():
-    return{
-        "message":"LINK Backend is running."
-    }
+    return{"message":"LINK Backend is running." }
 
 # REGISTER FARMER
 @app.post("/api/register")
 def register():
-    # Get the data sent by the frontend
     data= request.get_json()
 
-    # Take out the four fields we need
     full_name = data.get("fullName")
     phone_number = data.get("phoneNumber")
     village = data.get("village")
     password = data.get("password")
 
- # Make sure nothing is missing
     if not full_name or not phone_number or not village or not password:
-        return jsonify({
-            "message": "All fields are required."
-        }), 400
+        return jsonify({"message": "All fields are required."}), 400
 
     connection = get_db()
     cursor = connection.cursor()
-
-    # Check whether this phone number already exists
     cursor.execute(
-        "SELECT id FROM users WHERE phone_number = ?",
-        (phone_number,)
+        "SELECT id FROM users WHERE phone_number = ?",(phone_number,)
     )
 
     existing_user = cursor.fetchone()
@@ -58,11 +42,8 @@ def register():
     if existing_user:
         connection.close()
 
-        return jsonify({
-            "message": "Phone number already registered."
-        }), 409
+        return jsonify({"message": "Phone number already registered."}), 409
 
-    # Insert the new farmer
     cursor.execute("""
         INSERT INTO users
         (full_name, phone_number, village, password)
@@ -82,23 +63,16 @@ def register():
 # LOGIN FARMER
 @app.post("/api/login")
 def login():
-
-    # Get data sent by frontend
     data = request.get_json()
 
     phone_number = data.get("phoneNumber")
     password = data.get("password")
 
-    # Check that both fields were provided
     if not phone_number or not password:
-        return jsonify({
-            "message": "Phone number and password are required."
-        }), 400
+        return jsonify({"message": "Phone number and password are required."}), 400
 
     connection = get_db()
     cursor = connection.cursor()
-
-    # Find the farmer with this phone number and password
     cursor.execute("""
         SELECT id, full_name
         FROM users
@@ -111,13 +85,9 @@ def login():
     user = cursor.fetchone()
 
     connection.close()
-
-    # No matching farmer
     if user is None:
-        return jsonify({
-            "message": "Invalid phone number or password."
-        }), 401
-     # Login successful
+        return jsonify({"message": "Invalid phone number or password." }), 401
+    
     return jsonify({
         "message": "Login successful.",
         "userId": user["id"],
@@ -127,10 +97,10 @@ def login():
 # GET PROCUREMENT CENTRES
 @app.get("/api/centers")
 def get_centers():
-    # Connect to database
+    
     connection = get_db()
     cursor = connection.cursor()
-    # Get all procurement centres
+    
     cursor.execute("""
         SELECT id, center_name
         FROM procurement_centers
@@ -140,7 +110,7 @@ def get_centers():
     rows = cursor.fetchall()
 
     connection.close()
-    # Convert database rows into JSON-friendly data
+    
     centers = []
 
     for row in rows:
@@ -150,6 +120,7 @@ def get_centers():
         })
 
     return jsonify(centers), 200
+
 @app.get("/api/time-slots")
 def get_time_slots():
 
@@ -157,13 +128,10 @@ def get_time_slots():
     booking_date = request.args.get("date")
 
     if not center_id or not booking_date:
-        return jsonify({
-            "message": "Centre and date are required."
-        }), 400
+        return jsonify({"message": "Centre and date are required." }), 400
 
     connection = get_db()
     cursor = connection.cursor()
-
     cursor.execute("""
         SELECT
             id,
@@ -178,18 +146,63 @@ def get_time_slots():
     """, (center_id, booking_date))
 
     rows = cursor.fetchall()
-    connection.close()
 
     slots = []
 
     for row in rows:
+
+        cursor.execute("""
+            SELECT COUNT(*) AS booked_farmers
+            FROM bookings
+            WHERE slot_id = ?
+        """, (row["id"],))
+
+        booked_farmers = cursor.fetchone()["booked_farmers"]
+
+        cursor.execute("""
+            SELECT COALESCE(
+                SUM(total_quantity_kg), 0
+            ) AS booked_weight
+            FROM bookings
+            WHERE slot_id = ?
+        """, (row["id"],))
+
+        booked_weight = cursor.fetchone()["booked_weight"]
+
+        
+        remaining_farmers = max(
+            row["farmer_capacity"] - booked_farmers,
+            0
+        )
+
+        remaining_weight = max(
+            row["produce_capacity_kg"] - booked_weight,
+            0
+        )
+
         slots.append({
+
             "id": row["id"],
+
             "startTime": row["start_time"],
+
             "endTime": row["end_time"],
+
+            # Maximum capacity.
             "farmerCapacity": row["farmer_capacity"],
-            "produceCapacityKg": row["produce_capacity_kg"]
+
+            "produceCapacityKg":
+                row["produce_capacity_kg"],
+
+            # LIVE remaining capacity.
+            "remainingFarmerCapacity":
+                remaining_farmers,
+
+            "remainingProduceCapacityKg":
+                remaining_weight
         })
+
+    connection.close()
 
     return jsonify(slots), 200
 
@@ -206,16 +219,14 @@ def book_slot():
     box_weight_kg = data.get("boxWeightKg")
     total_quantity_kg = data.get("totalQuantityKg")
 
-    # Basic required fields
+    
     if not user_id or not center_id or not slot_id or not crop:
-        return jsonify({
-            "message": "Missing required booking information."
-        }), 400
+        return jsonify({"message": "Missing required booking information." }), 400
 
     connection = get_db()
     cursor = connection.cursor()
 
-     # Check that the selected slot belongs to the selected centre
+     # Check1
     cursor.execute("""
         SELECT
             id,
@@ -233,10 +244,8 @@ def book_slot():
     if slot is None:
         connection.close()
 
-        return jsonify({
-            "message": "Invalid time slot."
-        }), 400
-     # Count farmers already booked in this slot
+        return jsonify({"message": "Invalid time slot."}), 400
+    
     cursor.execute("""
         SELECT COUNT(*) AS farmer_count
         FROM bookings
@@ -248,10 +257,8 @@ def book_slot():
     if farmer_count >= slot["farmer_capacity"]:
         connection.close()
 
-        return jsonify({
-            "message": "This time slot is full."
-        }), 409
-    # Calculate already booked produce
+        return jsonify({"message": "This time slot is full."}), 409
+    
     cursor.execute("""
         SELECT COALESCE(SUM(total_quantity_kg), 0) AS booked_quantity
         FROM bookings
@@ -260,23 +267,16 @@ def book_slot():
 
     booked_quantity = cursor.fetchone()["booked_quantity"]
 
-    # Make sure quantity is valid
     if not total_quantity_kg or float(total_quantity_kg) <= 0:
         connection.close()
-        return jsonify({
-            "message": "Invalid quantity."
-        }), 400
+        return jsonify({"message": "Invalid quantity." }), 400
 
     total_quantity_kg = float(total_quantity_kg)
 
-    # Check produce capacity
     if booked_quantity + total_quantity_kg > slot["produce_capacity_kg"]:
         connection.close()
-
-        return jsonify({
-            "message": "Not enough produce capacity remaining in this slot."
-        }), 409
-      # Generate token number for this centre + date
+        return jsonify({ "message": "Not enough produce capacity remaining in this slot."}), 409
+    
     cursor.execute("""
         SELECT COALESCE(MAX(token_number), 0) + 1 AS next_token
         FROM bookings
@@ -294,8 +294,9 @@ def book_slot():
     ))
 
     token_number = cursor.fetchone()["next_token"]
-     # Save booking
+     
     booked_at = datetime.now().isoformat()
+
     cursor.execute("""
         INSERT INTO bookings (
             user_id,
@@ -331,58 +332,103 @@ def book_slot():
     "message": "Slot booked successfully.",
     "tokenNumber": token_number,
     "bookingId": cursor.lastrowid
-}), 201
+    }), 201
 
 @app.get("/api/queue")
 def get_queue():
-    center_id = request.args.get("center_id")
-    booking_date = request.args.get("date")
 
-    if not center_id or not booking_date:
+    booking_id = request.args.get("booking_id")
+
+    if not booking_id:
         return jsonify({
-            "message": "Centre and date are required."
+            "message": "Booking ID is required."
         }), 400
+
     connection = get_db()
     cursor = connection.cursor()
+
     cursor.execute("""
         SELECT
             bookings.id,
+            bookings.user_id,
+            bookings.center_id,
             bookings.token_number,
             bookings.crop,
             bookings.total_quantity_kg,
             bookings.booked_at,
             bookings.procurement_status,
+            time_slots.booking_date,
             time_slots.start_time,
             time_slots.end_time
+        FROM bookings
+        JOIN time_slots
+            ON bookings.slot_id = time_slots.id
+        WHERE bookings.id = ?
+    """, (booking_id,))
+
+    selected_booking = cursor.fetchone()
+
+    if not selected_booking:
+        connection.close()
+        return jsonify({"message": "Booking not found." }), 404
+
+    if selected_booking["procurement_status"] == "Completed":
+
+        connection.close()
+
+        return jsonify({
+            "bookingId": selected_booking["id"],
+            "tokenNumber": selected_booking["token_number"],
+            "status": "Completed",
+            "peopleAhead": 0,
+            "message": "Procurement completed."
+        }), 200
+    
+    cursor.execute("""
+        SELECT
+          COUNT(DISTINCT bookings.user_id)AS people_ahead
         FROM bookings
         JOIN time_slots
             ON bookings.slot_id = time_slots.id
         WHERE bookings.center_id = ?
           AND time_slots.booking_date = ?
           AND bookings.procurement_status = 'Waiting'
-        ORDER BY
-            time_slots.start_time ASC,
-            bookings.booked_at ASC,
-            bookings.token_number ASC
-    """, (center_id, booking_date))
-    rows = cursor.fetchall()
+          AND bookings.user_id!=?
+          AND (
+                time_slots.start_time < ?
+                OR (
+                    time_slots.start_time = ?
+                    AND bookings.booked_at < ?
+                )
+                OR (
+                    time_slots.start_time = ?
+                    AND bookings.booked_at = ?
+                    AND bookings.token_number < ?
+                )
+          )
+       
+    """, (
+        selected_booking["center_id"],
+        selected_booking["booking_date"],
+        selected_booking["user_id"],
+        selected_booking["start_time"],
+        selected_booking["start_time"],
+        selected_booking["booked_at"],
+        selected_booking["start_time"],
+        selected_booking["booked_at"],
+        selected_booking["token_number"]
+    ))
+
+    people_ahead = cursor.fetchone()["people_ahead"]
+
     connection.close()
 
-    queue = []
-
-    for row in rows:
-        queue.append({
-            "bookingId": row["id"],
-            "tokenNumber": row["token_number"],
-            "crop": row["crop"],
-            "quantityKg": row["total_quantity_kg"],
-            "bookedAt": row["booked_at"],
-            "slotStart": row["start_time"],
-            "slotEnd": row["end_time"],
-            "status": row["procurement_status"]
-        })
-
-    return jsonify(queue), 200
+    return jsonify({
+        "bookingId": selected_booking["id"],
+        "tokenNumber": selected_booking["token_number"],
+        "status": selected_booking["procurement_status"],
+        "peopleAhead": people_ahead
+    }), 200
 
 @app.get("/api/my-bookings")
 def get_my_bookings():
@@ -390,9 +436,7 @@ def get_my_bookings():
     user_id = request.args.get("user_id")
 
     if not user_id:
-        return jsonify({
-            "message": "User ID is required."
-        }), 400
+        return jsonify({"message": "User ID is required." }), 400
 
     connection = get_db()
     cursor = connection.cursor()

@@ -1,23 +1,122 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>LINK/Track queue</title>
+        <title>LINK - Track Queue</title>
         <link rel="stylesheet" href="looks.css">
     </head>
 
     <body>
+
         <h1>LINK</h1>
 
         <h2>Queue Status</h2>
 
-        <p>Current token: <b id="currentToken">Loading...</b></p>
+        <p>
+            Your token:
+            <b id="yourToken">Loading...</b>
+        </p>
 
-        <p>Your token: <b id="yourToken">Loading...</b></p>
+        <p>
+            People ahead:
+            <b id="peopleAhead">Loading...</b>
+        </p>
 
-        <p>People ahead: <b id="peopleAhead">Loading...</b></p>
+        <p>
+            Status:
+            <b id="bookingStatus">Loading...</b>
+        </p>
 
-        <p>Your position: <b id="yourPosition">Loading...</b></p>
+        <br>
+
+        <a href="my-tokens.html">
+            Back to My Tokens
+        </a>
 
         <script src="script.js"></script>
+        <script>
+    
+
+    // ------------------------------
+    // Load Queue Status
+    // ------------------------------
+
+    function loadQueue() {
+
+        // Get the booking ID from the URL.
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const bookingId =
+            params.get("booking_id");
+
+        // If there is no booking ID, we cannot track the queue.
+        if (!bookingId) {
+
+            document.getElementById("yourToken").textContent =
+                "Not found";
+
+            document.getElementById("peopleAhead").textContent =
+                "0";
+
+            document.getElementById("bookingStatus").textContent =
+                "Not found";
+
+            return;
+        }
+
+        // Ask the backend for this specific booking's queue status.
+        fetch(
+            `http://127.0.0.1:5000/api/queue?booking_id=${bookingId}`
+        )
+
+            // Convert the server response into JavaScript data.
+            .then(response => response.json())
+
+            .then(queue => {
+
+                // Display the farmer's token.
+                document.getElementById("yourToken").textContent =
+                    "APL-" +
+                    String(queue.tokenNumber).padStart(3, "0");
+
+                // Display how many people are ahead.
+                document.getElementById("peopleAhead").textContent =
+                    queue.peopleAhead;
+
+                // Display the current procurement status.
+                document.getElementById("bookingStatus").textContent =
+                    queue.status;
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Could not load queue:",
+                    error
+                );
+
+                document.getElementById("yourToken").textContent =
+                    "Could not load";
+
+                document.getElementById("peopleAhead").textContent =
+                    "-";
+
+                document.getElementById("bookingStatus").textContent =
+                    "Error";
+            });
+    }
+
+
+    // Load the queue immediately when the page opens.
+    loadQueue();
+
+
+    // Refresh the queue every 10 seconds.
+    setInterval(loadQueue, 10000);
+
+
+
+</script>
+
     </body>
 </html>

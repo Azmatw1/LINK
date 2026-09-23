@@ -7,8 +7,14 @@
     </head>
     <body>
         <h1>LINK</h1>
-        <h2>Welcome to LINK</h2>
-        <p>Login to manage your procurement slots.</p>
+         <!-- Language buttons -->
+        <button type="button" id="englishBtn">English</button>
+        <button type="button" id="urduBtn">اردو</button>
+
+        <h2 id="welcomeText">Welcome to LINK</h2>
+         <p id="descriptionText">
+            Login to manage your procurement slots.
+        </p>
         <form id="loginForm">
 
             <input
@@ -29,15 +35,17 @@
 
             <br><br>
 
-            <button type="submit">
+            <button type="submit" id="loginButton">
                 Login
             </button>
 
         </form>
 
-        <p>Don't have an account?</p>
+         <p id="registerQuestion">
+            Don't have an account?
+        </p>
 
-        <a href="register.html">Register</a>
+        <a href="register.html" id="registerLink">Register</a>
 
         <!-- JavaScript -->
         <script src="script.js"></script>

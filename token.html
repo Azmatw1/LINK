@@ -16,9 +16,9 @@
 
         <p>Please arrive at your selected procurement centre on time.</p>
 
-        <a href="queue.html">
-            Track queue
-        </a>
+       <a id="trackQueueLink" href="queue.html">
+    Track queue
+</a>
 
         <script src="script.js"></script>
 
@@ -26,9 +26,19 @@
             const token = localStorage.getItem("tokenNumber");
 
             if (token) {
-                document.getElementById("tokenNumber").textContent =
-                    "#" + token;
+                // Show the booking reference in a farmer-friendly format.
+// Example: token 4 becomes APL-004.
+const formattedToken = "APL-" + String(token).padStart(3, "0");
+
+document.getElementById("tokenNumber").textContent =
+    formattedToken;
             }
+            const bookingId = localStorage.getItem("bookingId");
+
+if (bookingId) {
+    document.getElementById("trackQueueLink").href =
+        `queue.html?booking_id=${bookingId}`;
+}
         </script>
     </body>
 </html>

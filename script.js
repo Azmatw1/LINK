@@ -201,9 +201,19 @@ if (centreDropdown && bookingDate && timeSlotDropdown) {
 
                 option.value = slot.id;
 
-                option.textContent =
-                    `${slot.startTime} - ${slot.endTime} | ${slot.farmerCapacity} farmer slots | ${slot.produceCapacityKg} kg`;
+              // Check the LIVE remaining capacity for this slot.
+const isFull =
+    slot.remainingFarmerCapacity <= 0 ||
+    slot.remainingProduceCapacityKg <= 0;
 
+// Show the remaining capacity to the farmer.
+option.textContent =
+    `${slot.startTime} - ${slot.endTime} | ` +
+    `${slot.remainingFarmerCapacity} farmers left | ` +
+    `${slot.remainingProduceCapacityKg} kg left`;
+
+// Disable the slot if either capacity has reached zero.
+option.disabled = isFull;
                 timeSlotDropdown.appendChild(option);
             });
 
@@ -289,40 +299,60 @@ if (bookingForm) {
         
 alert(result.message);
  if (response.ok) {
-            localStorage.setItem(
-                "tokenNumber",
-                result.tokenNumber
-            );
+    localStorage.setItem(
+        "tokenNumber",
+        result.tokenNumber
+    );
 
-            window.location.href = "token.html";
-        }
+    localStorage.setItem(
+        "bookingId",
+        result.bookingId
+    );
+
+    window.location.href = "token.html";
+}
     });
 }
+// ------------------------------
+// My Tokens
+// ------------------------------
+
 const tokensList = document.getElementById("tokensList");
 
 if (tokensList) {
+
     const userId = localStorage.getItem("userId");
 
     if (!userId) {
+
         tokensList.innerHTML = "Please login first.";
+
     } else {
+
         fetch(`http://127.0.0.1:5000/api/my-bookings?user_id=${userId}`)
+
             .then(response => response.json())
+
             .then(bookings => {
 
+                // Show a message if the farmer has no bookings.
                 if (bookings.length === 0) {
                     tokensList.innerHTML = "You have no bookings yet.";
                     return;
                 }
 
+                // Clear the loading message.
                 tokensList.innerHTML = "";
 
+                // Create one compact card for each booking.
                 bookings.forEach(booking => {
 
                     const card = document.createElement("div");
 
                     card.innerHTML = `
-                        <h3>Token #${booking.tokenNumber}</h3>
+                        <h3>
+                            APL-${String(booking.tokenNumber).padStart(3, "0")}
+                        </h3>
 
                         <p>
                             <b>Centre:</b> ${booking.centerName}
@@ -341,16 +371,14 @@ if (tokensList) {
                             <b>Crop:</b> ${booking.crop}
                         </p>
 
-                        <p>
-                            <b>Quantity:</b> ${booking.totalQuantityKg} kg
-                        </p>
+                       
 
-                        <p>
-                            <b>Status:</b> ${booking.status}
-                        </p>
+                        
 
-                        <button onclick="viewQueue(${booking.bookingId})">
-                            View Queue
+                        <button
+                            type="button"
+                            onclick="viewBookingDetails(${booking.bookingId})">
+                            View Details
                         </button>
 
                         <hr>
@@ -359,14 +387,206 @@ if (tokensList) {
                     tokensList.appendChild(card);
                 });
             })
+
             .catch(error => {
+
                 console.error("Could not load bookings:", error);
-                tokensList.innerHTML = "Could not load your bookings.";
+
+                tokensList.innerHTML =
+                    "Could not load your bookings.";
             });
     }
 }
 
 
-function viewQueue(bookingId) {
-    window.location.href = `queue.html?booking_id=${bookingId}`;
+// ------------------------------
+// Open full booking details
+// ------------------------------
+
+function viewBookingDetails(bookingId) {
+
+    // Send the selected booking ID to the details page.
+    window.location.href =
+        `booking-details.html?booking_id=${bookingId}`;
+}
+// Language toggle
+const englishBtn = document.getElementById("englishBtn");
+const urduBtn = document.getElementById("urduBtn");
+if (englishBtn && urduBtn) {
+
+    englishBtn.addEventListener("click", function() {
+
+        // Change visible text to English
+        document.getElementById("welcomeText").textContent =
+            "Welcome to LINK";
+
+        document.getElementById("descriptionText").textContent =
+            "Login to manage your procurement slots.";
+
+        document.getElementById("phoneNumber").placeholder =
+            "Phone number";
+
+        document.getElementById("password").placeholder =
+            "Password";
+
+        document.getElementById("loginButton").textContent =
+            "Login";
+
+        document.getElementById("registerQuestion").textContent =
+            "Don't have an account?";
+        document.getElementById("registerLink").textContent =
+            "Register";
+    });
+       urduBtn.addEventListener("click", function() {
+
+        // Change visible text to Urdu
+        document.getElementById("welcomeText").textContent =
+            "LINK میں خوش آمدید";
+
+        document.getElementById("descriptionText").textContent =
+            "اپنے خریداری کے اوقات کو منظم کرنے کے لیے لاگ اِن کریں۔";
+
+        document.getElementById("phoneNumber").placeholder =
+            "فون نمبر";
+
+        document.getElementById("password").placeholder =
+            "پاس ورڈ";
+
+        document.getElementById("loginButton").textContent =
+            "لاگ اِن";
+
+        document.getElementById("registerQuestion").textContent =
+            "کیا آپ کا اکاؤنٹ نہیں ہے؟";
+
+        document.getElementById("registerLink").textContent =
+            "رجسٹر کریں";
+    });
+}
+// ------------------------------
+// Show farmer name on dashboard
+// ------------------------------
+
+const farmerName = document.getElementById("farmerName");
+
+if (farmerName) {
+
+    // Get the farmer's name saved during login.
+    const fullName = localStorage.getItem("fullName");
+
+    if (fullName) {
+        farmerName.textContent = `Welcome, ${fullName}`;
+    }
+}
+// ------------------------------
+// Logout
+// ------------------------------
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", function() {
+
+        // Remove the farmer's saved login information.
+        localStorage.removeItem("userId");
+        localStorage.removeItem("fullName");
+
+        // Remove any saved booking information too.
+        localStorage.removeItem("tokenNumber");
+        localStorage.removeItem("bookingId");
+
+        // Send the farmer back to the login page.
+        window.location.href = "index.html";
+    });
+}
+// ------------------------------
+// Booking Details
+// ------------------------------
+
+const bookingDetails = document.getElementById("bookingDetails");
+
+if (bookingDetails) {
+
+    // Get the selected booking ID from the URL.
+    const params = new URLSearchParams(window.location.search);
+    const bookingId = params.get("booking_id");
+
+    if (!bookingId) {
+
+        bookingDetails.innerHTML = "Booking not found.";
+
+    } else {
+
+        // Get the logged-in farmer's ID.
+        const userId = localStorage.getItem("userId");
+
+        fetch(`http://127.0.0.1:5000/api/my-bookings?user_id=${userId}`)
+            .then(response => response.json())
+            .then(bookings => {
+
+                // Find the booking selected by the farmer.
+                const booking = bookings.find(
+                    item => item.bookingId == bookingId
+                );
+
+                if (!booking) {
+                    bookingDetails.innerHTML = "Booking not found.";
+                    return;
+                }
+
+                // Create the full booking details.
+                bookingDetails.innerHTML = `
+                    <p>
+                        <b>Centre:</b> ${booking.centerName}
+                    </p>
+
+                    <p>
+                        <b>Date:</b> ${booking.bookingDate}
+                    </p>
+
+                    <p>
+                        <b>Time:</b>
+                        ${booking.slotStart} - ${booking.slotEnd}
+                    </p>
+
+                    <p>
+                        <b>Crop:</b> ${booking.crop}
+                    </p>
+
+                    <p>
+                        <b>Quantity:</b> ${booking.totalQuantityKg} kg
+                    </p>
+
+                    <p>
+                        <b>Procurement:</b> ${booking.status}
+                    </p>
+
+                    <p>
+                        <b>Payment:</b> ${booking.paymentStatus}
+                    </p>
+                `;
+
+                // Show the booking reference at the top.
+                document.getElementById("bookingReference").textContent =
+                    `Booking: APL-${String(booking.tokenNumber).padStart(3, "0")}`;
+
+                // Make Track Queue open this exact booking.
+                document.getElementById("trackQueueBtn").onclick =
+                    function() {
+                        window.location.href =
+                            `queue.html?booking_id=${booking.bookingId}`;
+                    };
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Could not load booking details:",
+                    error
+                );
+
+                bookingDetails.innerHTML =
+                    "Could not load booking details.";
+            });
+    }
 }
